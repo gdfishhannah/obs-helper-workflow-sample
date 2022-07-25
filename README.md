@@ -29,6 +29,26 @@
 | include_self_folder  | 上传/下载文件夹时是否包含文件夹自身，不填时默认不包含 |  false  |  否  |
 | exclude  | 下载对象时，要排除的对象，上传时无用，不填时默认不排除 |  无  |  否  |
 
+> 请注意，上传/下载时，地址类参数请不要使用操作系统独有的地址符号（如Linux系统的'\~'，会被识别成名为'\~'的文件夹）。Github Actions提供的[上下文功能](https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context)中，有一些常用的地址上下文，例如：
+
+```yaml
+name: Show Contexts
+on:
+  push:
+    branches:
+        master
+jobs:
+  Show-Workspace:
+    runs-on: ubuntu-latest
+    steps:
+      # ${{ github.workspace }}为action运行时的工作目录
+      - name: echo workspace
+        run: echo ${{ github.workspace }}
+
+      # ${{ runner.temp }}为Linux GitHub 托管的运行器的tmp目录
+      - name: echo linux temp
+        run: echo ${{ runner.temp }}
+```
 <p id="bucketParams">
 
 ## **桶操作参数说明**
@@ -127,7 +147,9 @@
 ```
 完整样例： [.github/workflows/upload-file-sample.yml](.github/workflows/upload-file-sample.yml)
 #### 重命名上传：
-将本地文件resource/upload/file1.txt上传至桶内src/upload并重命名文件为newFile1.txt
+> 注意，重命名上传，是把这个文件重命名后，当成新的文件上传至桶内对应路径，并不会删除桶内原来的这个文件（如果存在的话）
+
+将本地文件resource/upload/file1.txt上传至桶内src/upload并重命名文件为newFile1.txt  
 ```yaml
     - name: Upload and Rename File To OBS
       uses: huaweicloud/obs-helper@v1.2.0
@@ -288,8 +310,6 @@
 <p id="downloadSample"></p>
 
 ## **下载对象使用样例**
-**注意**：下载时需要保证下载到一个存在的本地目录，即local_file_path中的每一级文件夹都是存在的。  
-
 假设您的OBS桶内包含目录结构：
 ```text
   src
