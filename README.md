@@ -38,7 +38,7 @@
 | local_file_path  | 对象的本地路径，上传对象时可填写多个 |  无  |  是  |
 | obs_file_path  | 对象在桶内的路径 |  无  |  下载时必填  |
 | include_self_folder  | 上传/下载文件夹时是否包含文件夹自身，上传/下载单个文件时无意义。默认不包含 |  false  |  否  |
-| exclude  | 下载对象时，要排除的对象，上传时无用。默认不排除 |  无  |  否  |
+| exclude  | 下载对象时，要排除的对象，上传时无用。不填写时不排除任何对象 |  无  |  否  |
 
 > 请注意，上传/下载时，地址类参数请不要使用操作系统独有的地址符号（如Linux系统的'\~'，会被识别成名为'\~'的文件夹）。Github Actions提供的[上下文功能](https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context)中，有一些常用的地址上下文，例如：
 
