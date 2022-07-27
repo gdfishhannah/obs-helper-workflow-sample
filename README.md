@@ -12,6 +12,17 @@
 1、需要开通华为云的OBS服务，进行对象操作时需要提前建好桶。[OBS主页](https://www.huaweicloud.com/product/obs.html)，[OBS文档](https://support.huaweicloud.com/obs/)；  
 2、action调用华为云接口需要华为云鉴权，建议将您华为云账户的ak/sk配置于您GitHub工程中的settting-Secret-Actions，分别添加为ACCESSKEY、SECRETACCESSKEY以加密使用，[获取ak/sk方式](https://support.huaweicloud.com/api-obs/obs_04_0116.html)；  
 3、注意替换参数region和参数bucket_name为自己OBS服务的真实region和桶名（创建桶时为要创建的桶名）；  
+
+# **华为云统一鉴权认证**
+推荐使用[huaweicloud/auth-action](https://github.com/huaweicloud/auth-action)进行OBS操作的鉴权认证。
+```yaml
+    - name: Authenticate to Huawei Cloud
+      uses: huaweicloud/auth-action@v1.0.0
+      with: 
+          access_key_id: ${{ secrets.ACCESSKEY }} 
+          secret_access_key: ${{ secrets.SECRETACCESSKEY }}
+          region: '<region>'
+```
 # **参数说明**
 
 <p id="objectParams">
@@ -19,15 +30,15 @@
 ## **对象操作参数说明**
 |  参数名称  |  参数说明  |  默认值  |  是否必填  |
 |  :----:  |  :----:  |  :----: |  :----:  |
-| access_key  | 访问密钥ID。与私有访问密钥关联的唯一标识符，和私有访问密钥(secret_key)一起使用，对请求进行加密签名。建议参照**前置工作**中的步骤2进行设置以加密使用。 |  无  |  是  |
-| secret_key  | 与访问密钥ID(access_key)结合使用的私有访问密钥，对请求进行加密签名，可标识发送方，并防止请求被修改。建议参照**前置工作**中的步骤2进行设置以加密使用。 |  无  |  是  |
-| region  | OBS服务所在区域 |  'cn-north-4'  |  是  |
+| access_key  | 访问密钥ID。与私有访问密钥关联的唯一标识符，和私有访问密钥(secret_key)一起使用，对请求进行加密签名。建议参照**前置工作**中的步骤2进行设置以加密使用。如果使用了华为云统一鉴权[huaweicloud/auth-action](https://github.com/huaweicloud/auth-action)可以不填写此参数 |  无  |  否  |
+| secret_key  | 与访问密钥ID(access_key)结合使用的私有访问密钥，对请求进行加密签名，可标识发送方，并防止请求被修改。建议参照**前置工作**中的步骤2进行设置以加密使用。如果使用了华为云统一鉴权[huaweicloud/auth-action](https://github.com/huaweicloud/auth-action)可以不填写此参数 |  无  |  否  |
+| region  | OBS服务所在区域。如果使用了华为云统一鉴权[huaweicloud/auth-action](https://github.com/huaweicloud/auth-action)可以不填写此参数 |  'cn-north-4'  |  否  |
 | bucket_name  | OBS的目标桶名 |  无  |  是  |
 | operation_type  | 要进行的操作，上传请使用*upload*，下载请使用*download* |  无  |  是  |
 | local_file_path  | 对象的本地路径，上传对象时可填写多个 |  无  |  是  |
 | obs_file_path  | 对象在桶内的路径 |  无  |  下载时必填  |
-| include_self_folder  | 上传/下载文件夹时是否包含文件夹自身，不填时默认不包含 |  false  |  否  |
-| exclude  | 下载对象时，要排除的对象，上传时无用，不填时默认不排除 |  无  |  否  |
+| include_self_folder  | 上传/下载文件夹时是否包含文件夹自身，上传/下载单个文件时无意义。默认不包含 |  false  |  否  |
+| exclude  | 下载对象时，要排除的对象，上传时无用。默认不排除 |  无  |  否  |
 
 > 请注意，上传/下载时，地址类参数请不要使用操作系统独有的地址符号（如Linux系统的'\~'，会被识别成名为'\~'的文件夹）。Github Actions提供的[上下文功能](https://docs.github.com/cn/actions/learn-github-actions/contexts#github-context)中，有一些常用的地址上下文，例如：
 
@@ -54,14 +65,14 @@ jobs:
 ## **桶操作参数说明**
 |  参数名称  |  参数说明  |  默认值  |  是否必填  |
 |  :----:  |  :----:  |  :----: |  :----:  |
-| access_key  | 访问密钥ID。与私有访问密钥关联的唯一标识符，和私有访问密钥(secret_key)一起使用，对请求进行加密签名。建议参照**前置工作**中的步骤2进行设置以加密使用。 |  无  |  是  |
-| secret_key  | 与访问密钥ID(access_key)结合使用的私有访问密钥，对请求进行加密签名，可标识发送方，并防止请求被修改。建议参照**前置工作**中的步骤2进行设置以加密使用。 |  无  |  是  |
-| region  | OBS服务所在区域 |  'cn-north-4'  |  是  |
+| access_key  | 访问密钥ID。与私有访问密钥关联的唯一标识符，和私有访问密钥(secret_key)一起使用，对请求进行加密签名。建议参照**前置工作**中的步骤2进行设置以加密使用。如果使用了华为云统一鉴权[huaweicloud/auth-action](https://github.com/huaweicloud/auth-action)可以不填写此参数 |  无  |  否  |
+| secret_key  | 与访问密钥ID(access_key)结合使用的私有访问密钥，对请求进行加密签名，可标识发送方，并防止请求被修改。建议参照**前置工作**中的步骤2进行设置以加密使用。如果使用了华为云统一鉴权[huaweicloud/auth-action](https://github.com/huaweicloud/auth-action)可以不填写此参数 |  无  |  否  |
+| region  | OBS服务所在区域。如果使用了华为云统一鉴权[huaweicloud/auth-action](https://github.com/huaweicloud/auth-action)可以不填写此参数 |  'cn-north-4'  |  否  |
 | bucket_name  | OBS的目标桶名 |  无  |  是  |
 | operation_type  | 要进行的操作，创建桶请使用*createbucket*，删除桶请使用*deletebucket* |  无  |  是  |
 | public_read  | 创建桶时，是否开放桶公共读权限，不填时默认不开放。如需设置其他权限，请在创建桶后到控制台进行修改 |  false  |  否  |
 | storage_class  | 创建桶时，桶的存储类型，不填时默认为*标准存储*|  无  |  否  |
-| clear_bucket  | 删除桶时，是否清空桶内全部对象/碎片，不填时默认清空 |  true  |  否  |  
+| clear_bucket  | 删除桶时，是否清空桶内全部对象/碎片，不填时默认清空 |  true  |  否  |
 ## **参数支持列表**
 <p id="regionList"></p>
 
@@ -92,6 +103,15 @@ jobs:
   归档存储： archive
 ```
 # **对象操作使用样例**
+以下action示例片段若无特别说明，均默认使用了华为云统一鉴权[huaweicloud/auth-action](https://github.com/huaweicloud/auth-action)。
+```yaml
+- name: Authenticate to Huawei Cloud
+  uses: huaweicloud/auth-action@v1.0.0
+  with: 
+    access_key_id: ${{ secrets.ACCESSKEY }} 
+    secret_access_key: ${{ secrets.SECRETACCESSKEY }}
+    region: '<region>'
+```
 <p id="uploadSample"></p>
 
 ## **上传对象使用样例**
@@ -123,18 +143,19 @@ jobs:
 | local_file_path  | 对象的本地路径，可填写多个 |  无  |  是  |
 | obs_file_path  | 要上传到桶内的路径 |  无  |  是  |
 ### 1、上传文件至OBS
-上传单个文件时，obs_file_path参数以'/'结尾，代表将文件不重命名传入文件夹中；不以'/'结尾代表将文件以新名称上传至对应路径
-#### 普通上传：
+> 注意：上传单个文件时，obs_file_path参数以'/'结尾，代表将文件不重命名传入文件夹中；不以'/'结尾代表将文件以新名称上传至对应路径。  
+
+#### 普通上传(不使用统一鉴权示例)：
 将本地文件resource/upload/file1.txt上传至桶内src/upload中
 ```yaml
         - name: Upload File To OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: upload_file_to_obs
           with:
             access_key: ${{ secrets.ACCESSKEY }}
             secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
-            bucket_name: ${bucket_name}
+            region: '<region>'
+            bucket_name: '<bucket-name>'
             local_file_path: ./resource/upload/file1.txt
             obs_file_path: src/upload/
             operation_type: upload
@@ -152,13 +173,10 @@ jobs:
 将本地文件resource/upload/file1.txt上传至桶内src/upload并重命名文件为newFile1.txt  
 ```yaml
     - name: Upload and Rename File To OBS
-      uses: huaweicloud/obs-helper@v1.2.0
+      uses: huaweicloud/obs-helper@v1.3.0
       id: upload_file_to_obs
       with:
-        access_key: ${{ secrets.ACCESSKEY }}
-        secret_key: ${{ secrets.SECRETACCESSKEY }}
-        region: cn-north-4
-        bucket_name: ${bucket_name}
+        bucket_name: '<bucket-name>'
         local_file_path: ./resource/upload/file1.txt
         obs_file_path: src/upload/newFile1.txt
         operation_type: upload
@@ -175,13 +193,10 @@ jobs:
 将本地文件夹resource/upload/folder2内的全部文件和文件夹上传至桶内src/upload/newFolder中
 ```yaml
         - name: Upload Folder To OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: upload_folder_to_obs
           with:
-            access_key: ${{ secrets.ACCESSKEY }}
-            secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
-            bucket_name: ${bucket_name}
+            bucket_name: '<bucket-name>'
             local_file_path: ./resource/upload/folder2
             obs_file_path: src/upload/newFolder
             operation_type: upload
@@ -217,13 +232,10 @@ jobs:
 将本地文件夹resource/upload/folder2及其内的全部文件和文件夹上传至桶内src/upload/newFolder中
 ```yaml
         - name: Upload Folder To OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: upload_folder_to_obs
           with:
-            access_key: ${{ secrets.ACCESSKEY }}
-            secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
-            bucket_name: ${bucket_name}
+            bucket_name: '<bucket-name>'
             local_file_path: ./resource/upload/folder2
             obs_file_path: src/upload/newFolder
             operation_type: upload
@@ -261,13 +273,10 @@ jobs:
 上传多文件/文件夹时，include_self_folder参数仅对文件夹有效，对文件无效，file1.txt在上传成功后的路径为src/upload/file1.txt
 ```yaml
         - name: Upload Folder and File To OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: upload_multi_files_to_obs
           with:
-            access_key: ${{ secrets.ACCESSKEY }}
-            secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
-            bucket_name: ${bucket_name}
+            bucket_name: '<bucket-name>'
             local_file_path: |
               ./resource/upload/folder1
               ./resource/upload/folder2
@@ -336,23 +345,21 @@ jobs:
 | local_file_path  | 对象的本地路径 |  无  |  是  |
 | obs_file_path  | 对象在桶内的路径 |  无  |  是  |
 | exclude  | 下载对象时，要排除的对象，不填时默认不排除 |  无  |  否  | 
+> 注意：下载单个文件时，local_file_path参数以'/'结尾，代表将文件不重命名传入文件夹中；不以'/'结尾代表将文件以新名称上传至对应路径。  
 ### 1、从OBS下载文件
-下载文件时，首先会检查本地是否存在local_file_path代表的文件/文件夹，  
-如果不存在此文件/文件夹，会尝试将文件下载为文件local_file_path；  
-如果存在此文件，则会覆盖此文件下载；  
-如果存在此文件夹，则会尝试将文件下载至此文件夹中，若此文件夹中仍有和目标文件同名的文件夹，则本次下载会失败。  
+下载文件时，首先会检查本地是否存与local_file_path同名的文件/文件夹，  
+如果不存在同名文件/文件夹，会尝试将文件下载为文件local_file_path；  
+如果存在同名文件，则会覆盖此文件下载；  
+如果存在同名文件夹，则会尝试将文件下载至此文件夹中，若此文件夹中仍有和目标文件同名的文件夹，则本次下载会失败。  
 具体示例如下：
 #### 普通下载：
 下载obs中的文件src/download/obsFile1.txt至本地resource/download目录下
 ```yaml
         - name: Download File From OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: download_file_from_obs
           with:
-            access_key: ${{ secrets.ACCESSKEY }}
-            secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
-            bucket_name: ${bucket_name}
+            bucket_name: '<bucket-name>'
             obs_file_path: src/download/obsFile1.txt
             local_file_path: ./resource/download/
             operation_type: download
@@ -374,13 +381,10 @@ jobs:
 下载obs中的文件src/download/obsFile1.txt至本地resource/download目录，并重命名为file3.txt
 ```yaml
         - name: Download and Rename File From OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: download_file_from_obs
           with:
-            access_key: ${{ secrets.ACCESSKEY }}
-            secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
-            bucket_name: ${bucket_name}
+            bucket_name: '<bucket-name>'
             obs_file_path: src/download/obsFile1.txt
             local_file_path: ./resource/download/file3.txt
             operation_type: download
@@ -402,15 +406,12 @@ jobs:
 下载obs中的文件src/download/obsFolder2/obsFile2-1.txt至本地resource/download目录
 ```yaml
         - name: Download File From OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: download_file_from_obs
           with:
-            access_key: ${{ secrets.ACCESSKEY }}
-            secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
-            bucket_name: ${bucket_name}
+            bucket_name: '<bucket-name>'
             obs_file_path: src/download/obsFolder2/obsFile2-1.txt
-            local_file_path: ./resource/download
+            local_file_path: ./resource/download/
             operation_type: download
 ```
 下载成功后，本地的目录结构应该为
@@ -434,13 +435,10 @@ Tips：如果文件夹'resource/download/obsFile2-1.txt'中仍然存在文件夹
 下载obs中的src/download文件夹下的内容到本地目录resource/download中
 ```yaml
         - name: Download Folder From OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: download_folder_from_obs
           with:
-            access_key: ${{ secrets.ACCESSKEY }}
-            secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
-            bucket_name: ${bucket_name}
+            bucket_name: '<bucket-name>'
             obs_file_path: src/download
             local_file_path: ./resource/download
             operation_type: download
@@ -474,13 +472,10 @@ Tips：如果文件夹'resource/download/obsFile2-1.txt'中仍然存在文件夹
 下载obs中的src/download文件夹及其内容到本地目录resource/download中，并排除src/upload/folder1文件夹和src/upload/folder2/file2-1.txt
 ```yaml
         - name: Download Folder Exclude Some Objects From OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: download_folder_from_obs
           with:
-            access_key: ${{ secrets.ACCESSKEY }}
-            secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
-            bucket_name: ${bucket_name}
+            bucket_name: '<bucket-name>'
             obs_file_path: src/download
             local_file_path: ./resource/download
             operation_type: download
@@ -537,12 +532,9 @@ Tips：如果文件夹'resource/download/obsFile2-1.txt'中仍然存在文件夹
 假设您的OBS中不存在名为'bucket-test'的桶   
 ```yaml
         - name: Create Default Bucket on OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: create_default_bucket_on_obs
           with:
-            access_key: ${{ secrets.ACCESSKEY }}
-            secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
             operation_type: createbucket
             bucket_name: bucket-test
 ```
@@ -553,12 +545,9 @@ Tips：如果文件夹'resource/download/obsFile2-1.txt'中仍然存在文件夹
 假设您的OBS中不存在名为'bucket-test'的桶   
 ```yaml
         - name: Create Bucket on OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: create_bucket_with_policy_on_obs
           with:
-            access_key: ${{ secrets.ACCESSKEY }}
-            secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
             operation_type: createbucket
             bucket_name: bucket-test
             public_read: true
@@ -590,12 +579,9 @@ Tips：如果文件夹'resource/download/obsFile2-1.txt'中仍然存在文件夹
 假设您的OBS中存在名为'bucket-test'的桶
 ```yaml
         - name: Delete Bucket on OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: delete_bucket_on_obs
           with:
-            access_key: ${{ secrets.ACCESSKEY }}
-            secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
             operation_type: deletebucket
             bucket_name: bucket-test
 ```
@@ -606,12 +592,9 @@ Tips：如果文件夹'resource/download/obsFile2-1.txt'中仍然存在文件夹
 假设您的OBS中存在名为'bucket-test'的桶
 ```yaml
         - name: Delete Bucket on OBS
-          uses: huaweicloud/obs-helper@v1.2.0
+          uses: huaweicloud/obs-helper@v1.3.0
           id: delete_bucket_not_clear
           with:
-            access_key: ${{ secrets.ACCESSKEY }}
-            secret_key: ${{ secrets.SECRETACCESSKEY }}
-            region: cn-north-4
             operation_type: deletebucket
             bucket_name: bucket-test
             clear_bucket: false
