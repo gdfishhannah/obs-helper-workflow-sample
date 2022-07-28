@@ -53,11 +53,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # ${{ github.workspace }}为action运行时的工作目录
-      - name: echo workspace
+      - name: Echo Workspace of Action
         run: echo ${{ github.workspace }}
 
-      # ${{ runner.temp }}为Linux GitHub 托管的运行器的tmp目录
-      - name: echo linux temp
+      # ${{ runner.temp }}为运行器临时目录的路径
+      - name: Echo Temporary Directory on the Runner
         run: echo ${{ runner.temp }}
 ```
 <p id="bucketParams">
@@ -148,7 +148,7 @@ jobs:
 #### 普通上传(不使用统一鉴权示例)：
 将本地文件resource/upload/file1.txt上传至桶内src/upload中
 ```yaml
-        - name: Upload File To OBS
+        - name: Upload File to OBS
           uses: huaweicloud/obs-helper@v1.3.0
           id: upload_file_to_obs
           with:
@@ -172,7 +172,7 @@ jobs:
 
 将本地文件resource/upload/file1.txt上传至桶内src/upload并重命名文件为newFile1.txt  
 ```yaml
-    - name: Upload and Rename File To OBS
+    - name: Upload and Rename File to OBS
       uses: huaweicloud/obs-helper@v1.3.0
       id: upload_file_to_obs
       with:
@@ -192,7 +192,7 @@ jobs:
 #### 不包含根文件夹上传：
 将本地文件夹resource/upload/folder2内的全部文件和文件夹上传至桶内src/upload/newFolder中
 ```yaml
-        - name: Upload Folder To OBS
+        - name: Upload Folder to OBS
           uses: huaweicloud/obs-helper@v1.3.0
           id: upload_folder_to_obs
           with:
@@ -231,7 +231,7 @@ jobs:
 #### 包含根文件夹上传：
 将本地文件夹resource/upload/folder2及其内的全部文件和文件夹上传至桶内src/upload/newFolder中
 ```yaml
-        - name: Upload Folder To OBS
+        - name: Upload Folder to OBS
           uses: huaweicloud/obs-helper@v1.3.0
           id: upload_folder_to_obs
           with:
@@ -272,7 +272,7 @@ jobs:
 #### 将本地文件夹resource/upload/folder1、resource/upload/folder2，和本地文件resource/upload/file1.txt上传至桶内src/upload目录中
 上传多文件/文件夹时，include_self_folder参数仅对文件夹有效，对文件无效，file1.txt在上传成功后的路径为src/upload/file1.txt。请注意不要使用超过10个本地路径。
 ```yaml
-        - name: Upload Folder and File To OBS
+        - name: Upload Folder and File to OBS
           uses: huaweicloud/obs-helper@v1.3.0
           id: upload_multi_files_to_obs
           with:
@@ -355,7 +355,7 @@ jobs:
 #### 普通下载：
 下载obs中的文件src/download/obsFile1.txt至本地resource/download目录下
 ```yaml
-        - name: Download File From OBS
+        - name: Download File from OBS
           uses: huaweicloud/obs-helper@v1.3.0
           id: download_file_from_obs
           with:
@@ -380,7 +380,7 @@ jobs:
 #### 重命名下载：
 下载obs中的文件src/download/obsFile1.txt至本地resource/download目录，并重命名为file3.txt
 ```yaml
-        - name: Download and Rename File From OBS
+        - name: Download and Rename File from OBS
           uses: huaweicloud/obs-helper@v1.3.0
           id: download_file_from_obs
           with:
@@ -405,7 +405,7 @@ jobs:
 #### 特殊情景-本地目录存在与待下载文件同名的文件夹：
 下载obs中的文件src/download/obsFolder2/obsFile2-1.txt至本地resource/download目录
 ```yaml
-        - name: Download File From OBS
+        - name: Download File from OBS
           uses: huaweicloud/obs-helper@v1.3.0
           id: download_file_from_obs
           with:
@@ -434,7 +434,7 @@ Tips：如果文件夹'resource/download/obsFile2-1.txt'中仍然存在文件夹
 #### 普通下载：
 下载obs中的src/download文件夹下的内容到本地目录resource/download中
 ```yaml
-        - name: Download Folder From OBS
+        - name: Download Folder from OBS
           uses: huaweicloud/obs-helper@v1.3.0
           id: download_folder_from_obs
           with:
@@ -471,7 +471,7 @@ Tips：如果文件夹'resource/download/obsFile2-1.txt'中仍然存在文件夹
 #### 排除下载：
 下载obs中的src/download文件夹及其内容到本地目录resource/download中，并排除src/upload/folder1文件夹和src/upload/folder2/file2-1.txt
 ```yaml
-        - name: Download Folder Exclude Some Objects From OBS
+        - name: Download Folder and Exclude Some Objects from OBS
           uses: huaweicloud/obs-helper@v1.3.0
           id: download_folder_from_obs
           with:

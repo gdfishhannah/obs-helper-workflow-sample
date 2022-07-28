@@ -10,8 +10,8 @@ jobs:
           access_key_id: ${{ secrets.ACCESSKEY }} 
           secret_access_key: ${{ secrets.SECRETACCESSKEY }}
           region: '<region>'
-          
-      - name: Download Folder Exclude Some Objects From OBS
+
+      - name: Download Folder and Exclude Some Objects from OBS
         uses: huaweicloud/obs-helper@v1.3.0
         with:
           bucket_name: '<bucket-name>'

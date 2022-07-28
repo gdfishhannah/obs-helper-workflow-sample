@@ -14,7 +14,7 @@ jobs:
           secret_access_key: ${{ secrets.SECRETACCESSKEY }}
           region: '<region>'
         
-      - name: Upload and Rename File To OBS
+      - name: Upload and Rename File to OBS
         uses: huaweicloud/obs-helper@v1.3.0
         with:
           bucket_name: '<bucket-name>'

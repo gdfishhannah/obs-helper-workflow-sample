@@ -14,7 +14,7 @@ jobs:
           secret_access_key: ${{ secrets.SECRETACCESSKEY }}
           region: '<region>'
         
-      - name: Upload File To OBS
+      - name: Upload File to OBS
         uses: huaweicloud/obs-helper@v1.3.0
         id: upload_file_to_obs
         with:

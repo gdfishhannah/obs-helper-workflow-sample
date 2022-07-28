@@ -11,7 +11,7 @@ jobs:
           secret_access_key: ${{ secrets.SECRETACCESSKEY }}
           region: '<region>'
 
-      - name: Download Folder From OBS
+      - name: Download Folder from OBS
         uses: huaweicloud/obs-helper@v1.3.0
         with:
           bucket_name: '<bucket-name>'
