@@ -35,7 +35,7 @@
 | region  | OBS服务所在区域。如果使用了华为云统一鉴权[huaweicloud/auth-action](https://github.com/huaweicloud/auth-action)可以不填写此参数 |  'cn-north-4'  |  否  |
 | bucket_name  | OBS的目标桶名 |  无  |  是  |
 | operation_type  | 要进行的操作，上传请使用*upload*，下载请使用*download* |  无  |  是  |
-| local_file_path  | 对象的本地路径，上传对象时可填写多个 |  无  |  是  |
+| local_file_path  | 对象的本地路径，上传对象时可填写1~10个 |  无  |  是  |
 | obs_file_path  | 对象在桶内的路径 |  无  |  下载时必填  |
 | include_self_folder  | 上传/下载文件夹时是否包含文件夹自身，上传/下载单个文件时无意义。默认不包含 |  false  |  否  |
 | exclude  | 下载对象时，要排除的对象，上传时无用。不填写时不排除任何对象 |  无  |  否  |
@@ -140,7 +140,7 @@ jobs:
 |  参数名称  |  参数说明  |  默认值  |  是否必填  |
 |  :----:  |  :----:  |  :----: |  :----:  |
 | operation_type  | 'upload' |  无  |  是  |
-| local_file_path  | 对象的本地路径，可填写多个 |  无  |  是  |
+| local_file_path  | 对象的本地路径，可填写1~10个 |  无  |  是  |
 | obs_file_path  | 要上传到桶内的路径 |  无  |  是  |
 ### 1、上传文件至OBS
 > 注意：上传单个文件时，obs_file_path参数以'/'结尾，代表将文件不重命名传入文件夹中；不以'/'结尾代表将文件以新名称上传至对应路径。  
@@ -270,7 +270,7 @@ jobs:
 完整样例： [.github/workflows/upload-folder-include-self-sample.yml](.github/workflows/upload-folder-include-self-sample.yml)
 ### 3、上传多个文件/文件夹至OBS
 #### 将本地文件夹resource/upload/folder1、resource/upload/folder2，和本地文件resource/upload/file1.txt上传至桶内src/upload目录中
-上传多文件/文件夹时，include_self_folder参数仅对文件夹有效，对文件无效，file1.txt在上传成功后的路径为src/upload/file1.txt
+上传多文件/文件夹时，include_self_folder参数仅对文件夹有效，对文件无效，file1.txt在上传成功后的路径为src/upload/file1.txt。请注意不要使用超过10个本地路径。
 ```yaml
         - name: Upload Folder and File To OBS
           uses: huaweicloud/obs-helper@v1.3.0
