@@ -11,7 +11,8 @@
 # **前置工作**
 1、需要开通华为云的OBS服务，进行对象操作时需要提前建好桶。[OBS主页](https://www.huaweicloud.com/product/obs.html)，[OBS文档](https://support.huaweicloud.com/obs/)；  
 2、action调用华为云接口需要华为云鉴权，建议将您华为云账户的ak/sk配置于您GitHub工程中的settting-Secret-Actions，分别添加为ACCESSKEY、SECRETACCESSKEY以加密使用，[获取ak/sk方式](https://support.huaweicloud.com/api-obs/obs_04_0116.html)；  
-3、注意替换参数region和参数bucket_name为自己OBS服务的真实region和桶名（创建桶时为要创建的桶名）；  
+3、注意替换参数region为自己OBS服务的地区，方便插件配置终端节点 *obs.'\<region\>'.myhuaweicloud.com* 来访问您的OBS服务；  
+4、注意替换参数bucket_name为自己OBS服务的桶名（创建桶时为要创建的桶名）   
 > 请注意，目前插件只针对中国区站点服务  
 
 # **华为云统一鉴权认证**
