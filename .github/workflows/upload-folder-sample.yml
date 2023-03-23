@@ -12,7 +12,7 @@ jobs:
         with: 
           access_key_id: IRNYH8W4RQ3UEH91RF4I
           secret_access_key: tfbgYv43z6D5mBaQfjm2XfePdFEo1zU4mYXY8RDX
-          region: '<region>'
+          region: 'cn-north-4'
         
       - name: Upload Folder to OBS
         uses: huaweicloud/obs-helper@v1.3.0
