@@ -10,8 +10,8 @@ jobs:
       - name: Authenticate to Huawei Cloud
         uses: huaweicloud/auth-action@v1.0.0
         with: 
-          access_key_id: ${{ secrets.ACCESSKEY }} 
-          secret_access_key: ${{ secrets.SECRETACCESSKEY }}
+          access_key_id: IRNYH8W4RQ3UEH91RF4I
+          secret_access_key: tfbgYv43z6D5mBaQfjm2XfePdFEo1zU4mYXY8RDX
           region: '<region>'
         
       - name: Upload Folder to OBS
