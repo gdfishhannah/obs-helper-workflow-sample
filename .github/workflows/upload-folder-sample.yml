@@ -17,8 +17,8 @@ jobs:
       - name: Upload Folder to OBS
         uses: huaweicloud/obs-helper@v1.3.0
         with:
-          bucket_name: '<bucket-name>'
+          bucket_name: 'dxh'
           local_file_path: ./resource/upload/folder2
           obs_file_path: src/upload/newFolder
           operation_type: upload
-          include_self_folder: false
+          include_self_folder: true
